@@ -1,4 +1,4 @@
-# Inventory
+# Inventory Management System
 
 Its an app that enables users to keep track of products.
 
@@ -12,6 +12,3 @@ npm run test   # test your app if it passes
 npm run start
 ```
 
-## ERD
-
-![Here's ERD for the app](Inventory.png)
