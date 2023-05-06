@@ -11,6 +11,7 @@ npm i  # install node modules
 npm run test   # test your app if it passes
 npm run start
 ```
+[Authors](https://github.com/Yosinan/Inventory_Management_System/blob/main/AUTHORS)
 Dereje Desta [Github](https://github.com/dere7)
 
 Yoseph Zewdu [Github](https://github.com/Yosinan)
