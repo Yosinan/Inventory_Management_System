@@ -11,4 +11,6 @@ npm i  # install node modules
 npm run test   # test your app if it passes
 npm run start
 ```
+Dereje Desta [Github] (https://github.com/dere7)
 
+Yoseph Zewdu [Github] (https://github.com/Yosinan)
