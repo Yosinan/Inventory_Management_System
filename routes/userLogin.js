@@ -11,6 +11,7 @@ router.post('/api/login', async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
         return res.status(404).json({ message: "User not found" });
+       
     }
     
     // Compare the password with the hashed password in the database
@@ -22,7 +23,8 @@ router.post('/api/login', async (req, res) => {
     }
 
     // Return a success message if the user is found and the password matches
-    res.send(`Welcome Back, ${user.name} :)`).json({ message: "Login successful" });
+    return res.send(`Welcome Back, ${user.name} :)`).json({ message: "Login successful" });
+    
 });
 
 module.exports = router
