@@ -7,18 +7,19 @@ const { ACCESS_TOKEN } = require("../config");
 const authenticate = require("../authenticate/auth");
 
 // login route
-router.post('/api/login', authenticate ,async (req, res) => {
+router.post('/api/login',async (req, res) => {
     const { email, password } = req.body;
 
+    
     // authenticate the user
-    const accessToken = jwt.sign({ email }, ACCESS_TOKEN);
-    res.json({ accessToken: accessToken });
+    // const accessToken = jwt.sign({ email }, ACCESS_TOKEN);
+    // res.json({ accessToken: accessToken });
 
 
     // Check if the user exists in the database
     const user = await User.findOne({ email });
     if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: "User not " });
        
     }
     
@@ -31,8 +32,7 @@ router.post('/api/login', authenticate ,async (req, res) => {
     }
 
     // Return a success message if the user is found and the password matches
-    res.setHeader('X-Foo', 'bar')
-    return res.send(`Welcome Back, ${user.name} :)`).json({ message: "Login successful" });
+    return res.status(200).json({ message: "Login successfully !!!" });
     
 });
 

@@ -12,7 +12,9 @@ fetchDataButton.addEventListener('click', () => {
     .then(data => {
       // Display the data in the HTML
       const dataHtml = `<p>Users : ${JSON.stringify(data)}</p>`;
+
       dataContainer.innerHTML = dataHtml;
+      
     })
     .catch(error => {
       // Display an error message in the HTML

@@ -14,10 +14,10 @@ router.get('/api/products', async (req, res) => {
     });
   
   // POST a new product
-router.post('/api/products', async (req, res) => {
+router.post('/api/products', (req, res) => {
       try {
       const product = new Product(req.body);
-      await product.save();
+      product.save();
       res.status(201).send(product);
       } catch (err) {
           res.status(500).send(err);
@@ -67,6 +67,5 @@ router.put('/api/products/:id', async (req, res) => {
         } 
       }
   });
-  
 
 module.exports = router;
