@@ -10,7 +10,6 @@ const authenticate = require("../authenticate/auth");
 router.post('/api/login',async (req, res) => {
     const { email, password } = req.body;
 
-    
     // authenticate the user
     // const accessToken = jwt.sign({ email }, ACCESS_TOKEN);
     // res.json({ accessToken: accessToken });
