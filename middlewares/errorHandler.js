@@ -1,4 +1,4 @@
-const errorHandler = (err, _req, res) => {
+const errorHandler = (err, _req, res, next) => {
 
   // const statcode = res.statusCode ? res.statusCode : 500;
   // res.status(statcode);
@@ -28,6 +28,7 @@ const errorHandler = (err, _req, res) => {
       res.status(500).send({ Error : "This is from our side "});
 
 }
+// next();
 };
 
 export default errorHandler;
