@@ -4,30 +4,32 @@ const User = require("../models/userModel");
 
 
 // Autherizing the user
-const authorization = (req, res, next) => {
+const auth = async (req, res,next) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
     // Check if the token exists
-    if (!token) {
-        return res.status(401).json({ message: "Unauthorized, login first." });
-    }
+    try{
+        // const token = req.cookies.token;
+        if (!token) {
+            return res.status(401).json({ message: "Unauthorized, login first." });
+        }
 
     // Verify the token
-    jwt.verify(token, ACCESS_TOKEN, (err, user) => {
-    if (err) {
-        return res.status(403).json({ message: "Forbidden" });
+    const ver = jwt.verify(token, ACCESS_TOKEN);
+   
+    const user  = await User.findById(ver.id).select("-password");
+    if (!user) {
+        res.status(401).json({ message: "User not found" });
     }
-
-    // user  = await user.findById(ver.id).select("-password");
-    // if (!user) {
-    //     res.status(401).json({ message: "User not found" });
-    // }
 
     // Set the user
     req.user = user;
     next();
-    });
+    }catch(err) {
+        return res.status(403).json({ message: err.message });
+    }
+      
 };
 
-module.exports = authorization;
+module.exports = auth;

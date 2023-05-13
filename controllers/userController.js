@@ -57,12 +57,22 @@ const loginUser = async (req, res) => {
     return res.status(200).json({ message: "Logged in successfully !!!" });
 };
 
-// Get all user 
+// Get user information
 const getUser = async (req, res) => {
     try {
-      // Get all users from the MongoDB collection
-      const user = await User.find();
-      res.json(user);
+      // Get user's info from the MongoDB collection
+      const user = await User.findById(req.user._id);
+      if (user) {
+      res.status(200).json(
+        {
+            __id: user._id,
+            username: user.username,
+            email: user.email
+        }
+      );
+      }else{
+        res.status(400).json({ message: "user not found" });
+      }
     } catch (err) {
       res.status(500).json({ message: err.message });
     }

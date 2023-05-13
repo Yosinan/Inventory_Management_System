@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use('/', userLogin);
+// app.use('/', userLogin);
 app.use('/', userRouter);
 app.use('/', productRouter);
 app.use('/', statusRouter);
