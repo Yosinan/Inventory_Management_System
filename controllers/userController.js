@@ -57,6 +57,18 @@ const loginUser = async (req, res) => {
     return res.status(200).json({ message: "Logged in successfully !!!" });
 };
 
+// Logout a user 
+const logoutUser = async (req, res) => {
+    res.cookie("Token", "", {
+        path: "/",
+        httpOnly: true,
+        expires: new Date(Date.now(0)),
+        sameSite: true,
+        secure: true
+      });
+      return res.status(201).json({message: "Logged out successfully"});
+};
+    
 // Get user information
 const getUser = async (req, res) => {
     try {
@@ -94,5 +106,6 @@ module.exports = {
     getUserById,
     registerUser,
     loginUser,
+    logoutUser,
 };
   
