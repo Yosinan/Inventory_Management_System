@@ -33,7 +33,7 @@ router.post('/api/users', async (req, res, next ) => {
       // generate the token and sign that new user
       const token = genToken(user._id); 
 
-         //send the token to the frontend using cookies
+      //send the token to the frontend using cookies
       res.cookie("Token", token, {
         path: "/",
         httpOnly: true,
@@ -42,12 +42,10 @@ router.post('/api/users', async (req, res, next ) => {
         secure: true
       });
       res.status(201).json({newUser, token});
-
       }catch (err) {
         // res.status(404).json({ message: err.message });
         next(err);
       }
-    
 });
   
 // Get a user by ID
