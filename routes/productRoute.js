@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/productModel');
 
+
 // Set up routes for products
 // GET all products
 router.get('/api/products', async (req, res) => {
@@ -9,7 +10,7 @@ router.get('/api/products', async (req, res) => {
       const products = await Product.find();
      res.send(products);
     } catch (err) {
-    res.status(500).send(err);
+    next(err);
      }
     });
   
@@ -25,33 +26,30 @@ router.post('/api/products', (req, res) => {
     });
   
   // GET a product by ID
-router.get('/api/products/:id', async (req, res) => {
-    try {
-      const product = await Product.findById(req.params.id);
-      res.send(product);
-    } catch (err) {
-      if (err) {
-      res.status(500).send(err);
-      } else if (!product) {
-        res.status(404).send('Product not found');
-        } 
-      }
-  });
+router.get('/api/products/:id', async (req, res, next) => {
+     const product = await Product.findById(req.params.id);
+      if (product) { res.send(product); }
+      else next(err); 
+      
+      
+});
   
   
   // DELETE a product by ID
 router.delete('/api/products/:id', async (req, res) => {
-    try {
       const product = await Product.findByIdAndDelete(req.params.id);
-      res.send(product);
-    } catch (err) {
-      if (err) {
-       res.status(500).send(err);
-      }
-      else if (!product) {
-          res.status(404).send('Product not found');
-        }
-      }
+      if (err) {res.send(err); }
+       res.send("Product deleted");
+      
+      // next(err);
+    
+  });
+
+  // Delete all products
+  router.delete('/api/products/', async (req, res) => {
+    await Product.deleteAll();
+    if (err) {res.send(err); }
+    res.send("All Products are deleted");
   });
   
   // PUT a product by ID
@@ -61,7 +59,7 @@ router.put('/api/products/:id', async (req, res) => {
       res.send(product);
     } catch (err) {
       if (err) {
-          res.status(500).send(err);
+         next(err);
         } else if (!product) {
           res.status(404).send('Product not found');
         } 

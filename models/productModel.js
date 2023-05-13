@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const User = require("./userModel");
 
 // Create a Mongoose schema for products
 const productSchema = new mongoose.Schema({
@@ -12,6 +11,16 @@ const productSchema = new mongoose.Schema({
     addedBy: String,
 });
   
+productSchema.set("toJSON",
+{
+  transform: (_, obj) => {
+    obj.id = obj._id;
+    delete obj._id;
+    delete obj.__v;
+
+  },
+})
+
   // Create a Mongoose model for products
   const Product = mongoose.model('Product', productSchema);
 

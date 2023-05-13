@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
     email: {
       type: String,
       required: true,
-      unique: true,
     },
     password: {
       type: String,
@@ -32,6 +31,14 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.set("toJSON",
+{
+  transform: (_, obj) => {
+    obj.id = obj._id;
+    delete obj._id;
+    delete obj.__v;
+  },
+})
 
 // Define a user model based on the user schema
 const User = mongoose.model('User', userSchema);

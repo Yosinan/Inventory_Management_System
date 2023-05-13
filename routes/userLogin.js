@@ -18,8 +18,7 @@ router.post('/api/login',async (req, res) => {
     // Check if the user exists in the database
     const user = await User.findOne({ email });
     if (!user) {
-        return res.status(404).json({ message: "User not " });
-       
+        return res.status(404).json({ message: "User not found " });
     }
     
     // Compare the password with the hashed password in the database
