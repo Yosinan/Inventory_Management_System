@@ -101,11 +101,15 @@ const getUserById =  async (req, res) => {
     }
 };
 
+const stat = async (req, res) => {
+    res.status(200).send("ok");
+};
 module.exports = {
     getUser,
     getUserById,
     registerUser,
     loginUser,
     logoutUser,
+    stat,
 };
   
