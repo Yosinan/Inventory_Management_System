@@ -1,10 +1,13 @@
-const express = require('express');
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const { ACCESS_TOKEN } = require("../config");
+const genToken = require("../authenticate/genToken");
 const router = express.Router();
 const User = require("../models/userModel");
 
 // Define the routes for the API
 
-  // Get a list of all users
+// Get a list of all users
 router.get('/api/users', async (req, res) => {
     try {
       // Get all users from the MongoDB collection
@@ -15,8 +18,7 @@ router.get('/api/users', async (req, res) => {
     }
 });
 
-
-// Create a new user
+// Create/Register a new user
 router.post('/api/users', async (req, res, next ) => {
     const user = new User({
       name: req.body.name,
@@ -27,7 +29,20 @@ router.post('/api/users', async (req, res, next ) => {
       try{
       // Save the new user to the MongoDB collection
       const newUser = await user.save();
-      res.status(201).json(newUser);
+
+      // generate the token and sign that new user
+      const token = genToken(user._id); 
+
+         //send the token to the frontend using cookies
+      res.cookie("Token", token, {
+        path: "/",
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 86400),
+        sameSite: true,
+        secure: true
+      });
+      res.status(201).json({newUser, token});
+
       }catch (err) {
         // res.status(404).json({ message: err.message });
         next(err);
@@ -35,7 +50,6 @@ router.post('/api/users', async (req, res, next ) => {
     
 });
   
-
 // Get a user by ID
 router.get('/api/users/:id', async (req, res) => {
     try {
