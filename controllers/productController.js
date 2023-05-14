@@ -8,7 +8,9 @@ const addItem = (req, res) => {
     try {
     const product = new Product(req.body);
     product.save();
-    res.status(201).send(product);
+    // res.status(201).send(product);
+    console.log("Product added successfully");
+    res.status(201).json({product});
     } catch (err) {
         res.status(500).send(err);
     }
