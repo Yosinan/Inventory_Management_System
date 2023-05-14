@@ -1,4 +1,5 @@
 const Product = require('../models/productModel');
+const User = require("../models/userModel");
 
 // Set up routes for products
 
@@ -16,7 +17,7 @@ const addItem = (req, res) => {
 // GET all products
 const getItems = async (req, res) => {
     try {
-      const products = await Product.find();
+    const products = await Product.find();
      res.send(products);
     } catch (err) {
     next(err);
@@ -25,29 +26,27 @@ const getItems = async (req, res) => {
   
 // GET a product by ID
 const  getItemById = async (req, res, next) => {
+  try{
      const product = await Product.findById(req.params.id);
       if (product) { res.send(product); }
-      else next(err); 
+  } catch (err) {
+       next(err); 
+}
 };
   
 // DELETE a product by ID
-const deleteItem = async (req, res) => {
+const deleteItem = async (req, res, next) => {
+  try{
       const product = await Product.findByIdAndDelete(req.params.id);
-      if (err) {res.send(err); }
-       res.send("Product deleted");
-      
-      // next(err);
+      if (product) { res.send("Product deleted"); 
+      res.status(404).send("Product not found");
+    }
+  } catch (err) {
+       next(err);
+  }
 };
 
-//   // Delete all products
-//   router.delete('/api/products/', async (req, res) => {
-//     await Product.deleteAll();
-//     if (err) {res.send(err); }
-//     res.send("All Products are deleted");
-//   });
-  
-// PUT a product by ID
-const editItem = async (req, res) => {
+const editItem = async (req, res, next) => {
     try {
      const product = await Product.findByIdAndUpdate(req.params.id, req.body);
       res.send(product);

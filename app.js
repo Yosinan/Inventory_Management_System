@@ -24,6 +24,6 @@ app.use('/', productRouter);
 app.use('/', statusRouter);
 
 // Error handler
-app.use(errorHandler);
+// app.use(errorHandler);
 
 module.exports = app;

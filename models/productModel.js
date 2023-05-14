@@ -8,7 +8,8 @@ const productSchema = new mongoose.Schema({
     description: String,
     images: [String],
     category: String,
-    addedBy: String,
+    addedBy: { type: mongoose.Schema.Types.ObjectId, ref:'User' },
+
 });
   
 productSchema.set("toJSON",

@@ -59,14 +59,21 @@ const loginUser = async (req, res) => {
 
 // Logout a user 
 const logoutUser = async (req, res) => {
-    res.cookie("Token", "", {
-        path: "/",
-        httpOnly: true,
-        expires: new Date(Date.now(0)),
-        sameSite: true,
-        secure: true
-      });
+    // res.cookie("Token", " ", {
+    //     path: "/",
+    //     httpOnly: true,
+    //     expires: new Date(Date.now(0)),
+    //     sameSite: true,
+    //     secure: true
+    //   });
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ message: err.message });
+      }
       return res.status(201).json({message: "Logged out successfully"});
+    });
+      
+      // res.redirect("/");
 };
     
 // Get user information
@@ -86,7 +93,7 @@ const getUser = async (req, res) => {
         res.status(400).json({ message: "user not found" });
       }
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      res.status(500).json({ message: "err.message" });
     }
 };
 
@@ -101,9 +108,10 @@ const getUserById =  async (req, res) => {
     }
 };
 
-const stat = async (req, res) => {
-    res.status(200).send("ok");
+const stat = (req, res) => {
+    res.status(200).json({message: "ok"});
 };
+
 module.exports = {
     getUser,
     getUserById,
@@ -112,4 +120,3 @@ module.exports = {
     logoutUser,
     stat,
 };
-  

@@ -5,8 +5,8 @@ const {  getItems, getItemById, addItem, editItem, deleteItem } = require("../co
 
 // using the APIs
 router.post("/api/products/add", addItem);
-router.put("/api/products/edit", editItem);
-router.delete("/api/products/delete", deleteItem);
+router.put("/api/products/edit/:id", editItem);
+router.delete("/api/products/delete/:id", deleteItem);
 router.get("/api/products/view", getItems);
 router.get("/api/products/:id", getItemById);
 

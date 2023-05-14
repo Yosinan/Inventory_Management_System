@@ -28,8 +28,8 @@ const errorHandler = (err, _req, res, next) => {
       res.status(500).send({ Error : "This is from our side "});
 
 }
-// next();
+next();
 };
 
-export default errorHandler;
+module.exports = errorHandler;
   
