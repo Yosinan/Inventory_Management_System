@@ -2,13 +2,28 @@ const mongoose = require("mongoose");
 
 // Create a Mongoose schema for products
 const productSchema = new mongoose.Schema({
-    name: String,
-    unitPrice: Number,
-    stock: Number,
-    description: String,
+    name: {
+      type: String, 
+      required: true 
+    },
+    unitPrice: {
+      type: Number,
+      required: true,
+    },
+    stock: {
+      type: Number,
+      required: true,
+    },
+    description:{
+      type: String,
+      required: true,
+    },
     images: [String],
     category: String,
-    addedBy: { type: mongoose.Schema.Types.ObjectId, ref:'User' },
+    addedBy: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref:'User', 
+      required: true },
 
 });
   

@@ -25,6 +25,7 @@ const auth = async (req, res,next) => {
 
     // Set the user
     req.user = user;
+    req.body.addedBy = user._id;
     next();
     }catch(err) {
         return res.status(403).json({ message: err.message });
