@@ -3,7 +3,7 @@ const User = require("../models/userModel");
 
 // Set up routes for products
 
-// Add products
+// Add products (logged in users only)
 const addItem = (req, res) => {
     try {
     const product = new Product(req.body);
@@ -34,7 +34,7 @@ const  getItemById = async (req, res, next) => {
 }
 };
   
-// DELETE a product by ID
+// DELETE a product by ID (logged in users only)
 const deleteItem = async (req, res, next) => {
   try{
       const product = await Product.findByIdAndDelete(req.params.id);
@@ -46,6 +46,7 @@ const deleteItem = async (req, res, next) => {
   }
 };
 
+// EDIT a product by ID (logged in users only)
 const editItem = async (req, res, next) => {
     try {
      const product = await Product.findByIdAndUpdate(req.params.id, req.body);
