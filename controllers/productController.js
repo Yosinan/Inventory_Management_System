@@ -38,7 +38,7 @@ const  getItemById = async (req, res, next) => {
 const deleteItem = async (req, res, next) => {
   try{
       const product = await Product.findByIdAndDelete(req.params.id);
-      if (product) { res.send("Product deleted"); 
+      if (product) { res.send("Product Deleted"); 
       res.status(404).send("Product not found");
     }
   } catch (err) {
