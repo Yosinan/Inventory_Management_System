@@ -17,21 +17,28 @@ const registerUser = async (req, res, next ) => {
     });
   
       try{
+        const { email } = req.body;
+        // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
+    // generate the token and sign that new user
+    const token = genToken(user._id); 
+
+    user.token = token;
+
+    //send the token to the frontend using cookies
+    res.cookie("Token", token, {
+      path: "/",
+      httpOnly: true,
+      sameSite: true,
+      secure: true
+    });
       // Save the new user to the MongoDB collection
-      const newUser = await user.save();
+      await user.save();
 
-      // generate the token and sign that new user
-      const token = genToken(user._id); 
-
-      //send the token to the frontend using cookies
-      res.cookie("Token", token, {
-        path: "/",
-        httpOnly: true,
-        expires: new Date(Date.now() + 1000 * 86400),
-        sameSite: true,
-        secure: true
-      });
-      res.status(201).json({newUser, token});
+     res.status(200).json({message: "User registered successfully !!!" , token: token});
       }catch (err) {
         // res.status(404).json({ message: err.message });
         next(err);
@@ -53,27 +60,32 @@ const loginUser = async (req, res) => {
     if (!isMatch) {
         return res.status(401).json({ message: "Incorrect password" });
     }
-    // Return a success message if the user is found and the password matches
-    return res.status(200).json({ message: "Logged in successfully !!!" });
+
+     return res.status(201).json({ message: "Logged in successfully !!!"});
+    
 };
 
 // Logout a user 
 const logoutUser = async (req, res) => {
-    // res.cookie("Token", " ", {
-    //     path: "/",
-    //     httpOnly: true,
-    //     expires: new Date(Date.now(0)),
-    //     sameSite: true,
-    //     secure: true
-    //   });
-    req.session.destroy((err) => {
-      if (err) {
-        return res.status(500).json({ message: err.message });
-      }
-      return res.status(201).json({message: "Logged out successfully"});
-    });
-      
-      // res.redirect("/");
+  try{
+   // const token = req.cookies.token;
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    const user = await User.findOne({ token });
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    // Remove the token from the database
+    user.token = undefined;
+    res.cookie("Token", "");
+    await user.save();
+
+    return res.status(201).json({message: "Logged out successfully"});
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+   // res.redirect("/");
 };
     
 // Get user information
@@ -85,7 +97,7 @@ const getUser = async (req, res) => {
       res.status(200).json(
         {
             __id: user._id,
-            username: user.username,
+            name: user.name,
             email: user.email
         }
       );
@@ -93,7 +105,7 @@ const getUser = async (req, res) => {
         res.status(400).json({ message: "user not found" });
       }
     } catch (err) {
-      res.status(500).json({ message: "err.message" });
+      res.status(500).json({ message: err.message });
     }
 };
 

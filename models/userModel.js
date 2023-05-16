@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema({
     password: {
       type: String,
       required: true,
-    }
+    },
+    token : {
+      type: String,
+      // required: true,
+    },
   });
   
 // Hash the password before saving it to the database
